@@ -1,0 +1,13 @@
+# List of DNS zones to check
+# Use the keyword 'root' to match the A-record of the domain itself, like 'example.com'
+---
+cloudflareEmail: yourEmailToLogin
+cloudflareAuthKey: yourAPIkey
+
+zones:
+    example.com:
+        - root
+        - home
+    example2.net:
+        - www
+        - myhost
