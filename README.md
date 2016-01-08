@@ -8,7 +8,7 @@ This has been an exercise to get familier with Python, so any comments and impro
 If you encounter a problem, please file a Github issue.
 
 ##How to get started
-1. Download the files on your system using `git clone https://github.com/rickmur/CloudFlareDDNS.git`
+1. Download the files on your system using `git clone https://github.com/rickmur/CloudFlareDDNS.git`. Any further updates are downloaded using `git pull` from the new directory
 2. Install required libraries with `pip install -r requirements.txt`. If your Synology doesn't have pip installed yet, follow the steps in the next section
 3. Copy `CFupdater.default` to `CFupdater.conf` with `cp CFupdater.default CPupdater.conf`
 4. Edit `CFupdater.conf` to include your CloudFlare username (e-mail), API key (found in Settings panel) and your domainnames (zones) and records as per the example below
@@ -20,7 +20,7 @@ If you encounter a problem, please file a Github issue.
 3. Run `python get-pip.py`
 
 #####Sample crontab job
-The following line should be appended to your crontab file (edited either with `crontab -e` or on Synology with `vi /etc/crontab'. This line will execute the script every hour on every day on minute 0 of each hour.
+The following line should be appended to your crontab file (edited either with `crontab -e` or on Synology with `vi /etc/crontab`. This line will execute the script every hour on every day on minute 0 of each hour.
 
     0       *       *       *       *       root    python /PATH_TO_FILES/CFupdater.py
 
