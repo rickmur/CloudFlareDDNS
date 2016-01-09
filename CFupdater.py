@@ -124,4 +124,4 @@ except requests.HTTPError:
   print ("ERROR: Unexpected data received, check authentication settings")
 except Exception as e:
   log.exception("ERROR: Something went wrong with the following error:")
-  syslog.syslog(syslog.LOG_ERR, e)
+  syslog.syslog(syslog.LOG_ERR, str(e))
