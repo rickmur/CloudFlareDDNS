@@ -1,0 +1,10 @@
+test
+test
+2016-01-09 17:06:30,343 - CFupdater - INFO - test
+2016-01-09 17:06:44,095 - CFupdater - INFO - test
+2016-01-09 17:07:14,829-CFupdater-INFO: test
+2016-01-09 17:13:13,458-CFupdater-ERROR: ERROR: Something went wrong with the following error:
+Traceback (most recent call last):
+  File "/Users/rmur/CloudStation/Dev/CloudFlareDDNS/CFupdater.py", line 29, in <module>
+    myConfig = yaml.loaad(open(configFile).read())
+AttributeError: 'module' object has no attribute 'loaad'

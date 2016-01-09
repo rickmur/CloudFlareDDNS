@@ -5,6 +5,7 @@ __version__ = "1.0"
 import yaml
 import json
 import logging
+import syslog
 import requests
 import os
 from netaddr import IPAddress
@@ -14,9 +15,18 @@ print ("Maverick.Solutions - CloudFlare DNS Updater")
 print ("--------------------------------------------")
 
 try:
+
+  # Setup logging to local file
+  logging.basicConfig(level=logging.INFO)
+  log = logging.getLogger("CFupdater")
+  handler = logging.FileHandler("CFupdater.log")
+  handler.setLevel(logging.WARNING)
+  handler.setFormatter(logging.Formatter("%(asctime)s-%(name)s-%(levelname)s: %(message)s"))
+  log.addHandler(handler)
+
   # Load settings files and verify if YAML contents are found
-  configFile = open(os.path.dirname(__file__) + "/CFupdater.conf").read()
-  myConfig = yaml.load(configFile)
+  configFile = os.path.realpath(os.path.dirname(__file__)) + "/CFupdater.conf"
+  myConfig = yaml.loaad(open(configFile).read())
   if (not myConfig):
     raise Exception
 
@@ -113,6 +123,5 @@ except requests.HTTPError:
   print ("----------------------------------------------------")
   print ("ERROR: Unexpected data received, check authentication settings")
 except Exception as e:
-  print ("----------------------------------------------------")
-  print ("ERROR: Something went wrong with the following error:")
-  print (e)
+  log.exception("ERROR: Something went wrong with the following error:")
+  syslog.syslog(syslog.LOG_ERR, e)
