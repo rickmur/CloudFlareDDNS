@@ -16,35 +16,45 @@ print ("--------------------------------------------")
 
 try:
 
-  # Setup logging to local file
-  logging.basicConfig(level=logging.INFO)
+  # Setup logging, set 'requests' logging to WARNING instead of INFO
+  logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
   log = logging.getLogger("CFupdater")
-  handler = logging.FileHandler("CFupdater.log")
-  handler.setLevel(logging.WARNING)
-  handler.setFormatter(logging.Formatter("%(asctime)s-%(name)s-%(levelname)s: %(message)s"))
-  log.addHandler(handler)
+  logging.getLogger("requests").setLevel(logging.WARNING)
 
   # Load settings files and verify if YAML contents are found
   configFile = os.path.realpath(os.path.dirname(__file__)) + "/CFupdater.conf"
-  myConfig = yaml.loaad(open(configFile).read())
+  myConfig = yaml.load(open(configFile).read())
   if (not myConfig):
     raise Exception
+
+  # Check if logging to file is wanted and setup logging
+  logFile = ""
+  try:
+    logFile = os.path.realpath(myConfig["logging"]["file"])
+  except:
+    pass
+
+  if (logFile):
+    handler = logging.FileHandler(logFile)
+    handler.setLevel(logging.INFO)
+    handler.setFormatter(logging.Formatter("%(asctime)s-%(name)s-%(levelname)s: %(message)s"))
+    log.addHandler(handler)
 
   # Get WAN (External) IP address from 2 sources, if first fails, failover
   try:
     getIP = requests.get("http://myip.dnsomatic.com")
   except ConnectionError:
-    print ("WARNING: Primary IP check website unavailable, failover")
+    log.warning("WARNING: Primary IP check website unavailable, failover")
     getIP = requests.get("http://curlmyip.com")
 
   # Check if HTTP status is OK and response is received
   if (not getIP.ok):
-    print ("HTTP error: " + getIP.reason)
+    log.error ("HTTP error: " + getIP.reason)
     getIP.raise_for_status()
 
   # Format received IP in IPAddress type to verify contents
   myIP = IPAddress(getIP.text)
-  print ("WAN IP: " + str(myIP))
+  log.info ("WAN IP: " + str(myIP))
 
   # Build headers for REST call and get zone list
   CFheaders = {
@@ -56,7 +66,7 @@ try:
 
   # Check if HTTP status is OK and response is received
   if (not myZonesGet.ok):
-    print ("HTTP error: " + myZonesGet.reason)
+    log.error ("HTTP error: " + myZonesGet.reason)
     myZonesGet.raise_for_status()
 
   # Lookup zone identifier in zone list and match against config
@@ -66,14 +76,14 @@ try:
       zoneName = CFzone["name"]
       zoneID = CFzone["id"]
       recordsConfig = myConfig["zones"][zoneName]
-      print ("Found zone " + zoneName)
+      log.info("Found zone " + zoneName)
 
       # Get Records list to verify if records exist that want an update
       myRecordsGet = requests.get("https://api.cloudflare.com/client/v4/zones/" + zoneID + "/dns_records?type=A", headers=CFheaders)
 
       # Check if HTTP status is OK and response is received
       if (not myRecordsGet.ok):
-        print ("HTTP error: " + myRecordsGet.reason)
+        log.error ("HTTP error: " + myRecordsGet.reason)
         myRecordsGet.raise_for_status()
 
       # Lookup records in zone list and match against config
@@ -93,7 +103,7 @@ try:
         if record in recordsConfig:
           if CFrecord["content"] == str(myIP):
             # IP is still the same so no update
-            print ("\tNo update necessary for " + CFrecord["name"])
+            log.info ("\tNo update necessary for " + CFrecord["name"])
           else:
             # Update record with new IP
             CFrecord["content"] = str(myIP)
@@ -103,25 +113,22 @@ try:
 
             # Check if HTTP status is OK and response is received
             if (not myRecordsGet.ok):
-              print ("HTTP error: " + myRecordsGet.reason)
+              log.error ("HTTP error: " + myRecordsGet.reason)
               updateRecord.raise_for_status()
 
             # Check if CloudFlare response is Success or not
             updateRecordJson = updateRecord.json()
             if (bool(updateRecordJson["success"])):
-              print ("\tUpdating " + CFrecord["name"] + " completed successfully")
+              log.info ("\tUpdating " + CFrecord["name"] + " completed successfully")
             else:
-              print ("\tERROR: Updating " + CFrecord["name"] + " failed!")
-              print ("\tCloudFlare ERROR: " + str(updateRecordJson["errors"][0]["message"]))
+              log.error ("\tERROR: Updating " + CFrecord["name"] + " failed!")
+              log.error ("\tCloudFlare ERROR: " + str(updateRecordJson["errors"][0]["message"]))
 
-  print ("--------------------------------------------")
-  print ("All done! Thank you!")
+  log.info("All done! Thank you!")
 except requests.ConnectionError:
-  print ("----------------------------------------------------")
-  print ("ERROR: Connection failed, please check Internet connection")
+  log.error ("ERROR: Connection failed, please check Internet connection")
 except requests.HTTPError:
-  print ("----------------------------------------------------")
-  print ("ERROR: Unexpected data received, check authentication settings")
+  log.error ("ERROR: Unexpected data received, check authentication settings")
 except Exception as e:
   log.exception("ERROR: Something went wrong with the following error:")
-  syslog.syslog(syslog.LOG_ERR, str(e))
+  syslog.syslog(syslog.LOG_ERR, "ERROR: Something went wrong with the following error:" + str(e))

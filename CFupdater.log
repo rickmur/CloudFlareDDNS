@@ -8,3 +8,43 @@ Traceback (most recent call last):
   File "/Users/rmur/CloudStation/Dev/CloudFlareDDNS/CFupdater.py", line 29, in <module>
     myConfig = yaml.loaad(open(configFile).read())
 AttributeError: 'module' object has no attribute 'loaad'
+2016-01-09 17:27:03,529-CFupdater-INFO: Found zone rickmur.com
+2016-01-09 17:29:14,699-CFupdater-INFO: Found zone rickmur.com
+2016-01-09 17:29:49,188-CFupdater-INFO: Found zone rickmur.com
+2016-01-09 17:31:20,691-CFupdater-INFO: Found zone rickmur.com
+2016-01-09 17:37:51,593-CFupdater-INFO: Found zone rickmur.com
+2016-01-09 17:37:52,560-CFupdater-INFO: All done! Thank you!
+2016-01-09 17:38:47,184-CFupdater-INFO: Found zone rickmur.com
+2016-01-09 17:38:47,462-CFupdater-INFO: All done! Thank you!
+2016-01-09 17:42:12,900-CFupdater-INFO: Found zone rickmur.com
+2016-01-09 17:42:13,549-CFupdater-INFO: All done! Thank you!
+2016-01-09 17:45:09,961-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-09 17:45:10,941-CFupdater-INFO: Found zone rickmur.com
+2016-01-09 17:45:11,864-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-09 17:45:11,864-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-09 17:45:11,864-CFupdater-INFO: All done! Thank you!
+2016-01-09 17:45:28,592-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-09 17:45:28,881-CFupdater-INFO: Found zone rickmur.com
+2016-01-09 17:45:29,156-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-09 17:45:29,156-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-09 17:45:29,156-CFupdater-INFO: All done! Thank you!
+2016-01-09 17:45:39,766-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-09 17:45:40,739-CFupdater-INFO: Found zone rickmur.com
+2016-01-09 17:45:41,006-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-09 17:45:41,006-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-09 17:45:41,006-CFupdater-INFO: All done! Thank you!
+2016-01-09 17:45:46,699-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-09 17:45:46,973-CFupdater-INFO: Found zone rickmur.com
+2016-01-09 17:45:47,273-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-09 17:45:47,273-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-09 17:45:47,273-CFupdater-INFO: All done! Thank you!
+2016-01-09 17:45:50,520-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-09 17:45:51,184-CFupdater-INFO: Found zone rickmur.com
+2016-01-09 17:45:52,106-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-09 17:45:52,106-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-09 17:45:52,106-CFupdater-INFO: All done! Thank you!
+2016-01-09 17:45:56,774-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-09 17:45:57,633-CFupdater-INFO: Found zone rickmur.com
+2016-01-09 17:45:57,908-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-09 17:45:57,908-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-09 17:45:57,908-CFupdater-INFO: All done! Thank you!

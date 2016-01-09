@@ -11,3 +11,7 @@ zones:
     example2.net:
         - www
         - myhost
+
+logging:
+    file: CFupdater.log
+    syslog: true
