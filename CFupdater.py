@@ -14,6 +14,8 @@ print ("--------------------------------------------")
 print ("Maverick.Solutions - CloudFlare DNS Updater")
 print ("--------------------------------------------")
 
+syslogYes = False
+
 try:
 
   # Setup logging, set 'requests' logging to WARNING instead of INFO
@@ -27,10 +29,11 @@ try:
   if (not myConfig):
     raise Exception
 
-  # Check if logging to file is wanted and setup logging
+  # Check if logging to file is wanted and setup logging and same for syslog
   logFile = ""
   try:
     logFile = os.path.realpath(myConfig["logging"]["file"])
+    syslogYes = bool(myConfig["logging"]["syslog"])
   except:
     pass
 
@@ -43,13 +46,19 @@ try:
   # Get WAN (External) IP address from 2 sources, if first fails, failover
   try:
     getIP = requests.get("http://myip.dnsomatic.com")
-  except ConnectionError:
-    log.warning("WARNING: Primary IP check website unavailable, failover")
+  except requests.ConnectionError:
+    msg = "Primary IP check website unavailable, failover"
+    log.warning(msg)
+    if (syslogYes):
+      syslog.syslog(syslog.LOG_WARNING, msg)
     getIP = requests.get("http://curlmyip.com")
 
   # Check if HTTP status is OK and response is received
   if (not getIP.ok):
-    log.error ("HTTP error: " + getIP.reason)
+    msg = "HTTP error: " + getIP.reason
+    log.error (msg)
+    if (syslogYes):
+      syslog.syslog(syslog.LOG_ERR, msg)
     getIP.raise_for_status()
 
   # Format received IP in IPAddress type to verify contents
@@ -66,7 +75,10 @@ try:
 
   # Check if HTTP status is OK and response is received
   if (not myZonesGet.ok):
-    log.error ("HTTP error: " + myZonesGet.reason)
+    msg = "HTTP error: " + myZonesGet.reason
+    log.error (msg)
+    if (syslogYes):
+      syslog.syslog(syslog.LOG_ERR, msg)
     myZonesGet.raise_for_status()
 
   # Lookup zone identifier in zone list and match against config
@@ -83,7 +95,10 @@ try:
 
       # Check if HTTP status is OK and response is received
       if (not myRecordsGet.ok):
-        log.error ("HTTP error: " + myRecordsGet.reason)
+        msg = "HTTP error: " + myRecordsGet.reason
+        log.error (msg)
+        if (syslogYes):
+          syslog.syslog(syslog.LOG_ERR, msg)
         myRecordsGet.raise_for_status()
 
       # Lookup records in zone list and match against config
@@ -113,7 +128,10 @@ try:
 
             # Check if HTTP status is OK and response is received
             if (not myRecordsGet.ok):
-              log.error ("HTTP error: " + myRecordsGet.reason)
+              msg = "HTTP error: " + myRecordsGet.reason
+              log.error (msg)
+              if (syslogYes):
+                syslog.syslog(syslog.LOG_ERR, msg)
               updateRecord.raise_for_status()
 
             # Check if CloudFlare response is Success or not
@@ -121,14 +139,27 @@ try:
             if (bool(updateRecordJson["success"])):
               log.info ("\tUpdating " + CFrecord["name"] + " completed successfully")
             else:
-              log.error ("\tERROR: Updating " + CFrecord["name"] + " failed!")
-              log.error ("\tCloudFlare ERROR: " + str(updateRecordJson["errors"][0]["message"]))
+              msg = "\t Updating " + CFrecord["name"] + " failed!"
+              log.error (msg)
+              if (syslogYes):
+                syslog.syslog(syslog.LOG_ERR, msg)
+              msg = "\tCloudFlare ERROR: " + str(updateRecordJson["errors"][0]["message"])
+              log.error (msg)
+              if (syslogYes):
+                syslog.syslog(syslog.LOG_ERR, msg)
 
   log.info("All done! Thank you!")
 except requests.ConnectionError:
-  log.error ("ERROR: Connection failed, please check Internet connection")
+  msg = "Connection failed, please check Internet connection"
+  log.error (msg)
+  if (syslogYes):
+    syslog.syslog(syslog.LOG_ERR, msg)
 except requests.HTTPError:
-  log.error ("ERROR: Unexpected data received, check authentication settings")
+  msg = "Unexpected data received, check authentication settings"
+  log.error (msg)
+  if (syslogYes):
+    syslog.syslog(syslog.LOG_ERR, msg)
 except Exception as e:
-  log.exception("ERROR: Something went wrong with the following error:")
-  syslog.syslog(syslog.LOG_ERR, "ERROR: Something went wrong with the following error:" + str(e))
+  log.exception("Something went wrong with the following error:")
+  if (syslogYes):
+    syslog.syslog(syslog.LOG_ERR, "Something went wrong with the following error:" + str(e))

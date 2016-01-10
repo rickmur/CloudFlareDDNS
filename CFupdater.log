@@ -48,3 +48,69 @@ AttributeError: 'module' object has no attribute 'loaad'
 2016-01-09 17:45:57,908-CFupdater-INFO: 	No update necessary for home.rickmur.com
 2016-01-09 17:45:57,908-CFupdater-INFO: 	No update necessary for test.rickmur.com
 2016-01-09 17:45:57,908-CFupdater-INFO: All done! Thank you!
+2016-01-10 17:47:37,166-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-10 17:47:38,382-CFupdater-INFO: Found zone rickmur.com
+2016-01-10 17:47:39,134-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-10 17:47:39,135-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-10 17:47:39,135-CFupdater-INFO: All done! Thank you!
+2016-01-10 17:47:53,634-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-10 17:47:53,925-CFupdater-INFO: Found zone rickmur.com
+2016-01-10 17:47:54,668-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-10 17:47:54,668-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-10 17:47:54,668-CFupdater-INFO: All done! Thank you!
+2016-01-10 17:51:27,427-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-10 17:51:27,728-CFupdater-INFO: Found zone rickmur.com
+2016-01-10 17:51:28,003-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-10 17:51:28,003-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-10 17:51:28,004-CFupdater-INFO: All done! Thank you!
+2016-01-10 17:55:25,629-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-10 17:55:27,003-CFupdater-INFO: Found zone rickmur.com
+2016-01-10 17:55:27,274-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-10 17:55:27,274-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-10 17:55:27,274-CFupdater-INFO: All done! Thank you!
+2016-01-10 17:55:40,697-CFupdater-ERROR: ERROR: Something went wrong with the following error:
+Traceback (most recent call last):
+  File "/Users/rmur/CloudStation/Dev/CloudFlareDDNS/CFupdater.py", line 49, in <module>
+    except ConnectionError:
+NameError: name 'ConnectionError' is not defined
+2016-01-10 17:56:04,640-CFupdater-WARNING: WARNING: Primary IP check website unavailable, failover
+2016-01-10 17:56:05,457-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-10 17:56:05,741-CFupdater-INFO: Found zone rickmur.com
+2016-01-10 17:56:06,014-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-10 17:56:06,014-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-10 17:56:06,014-CFupdater-INFO: All done! Thank you!
+2016-01-10 17:56:39,357-CFupdater-WARNING: Primary IP check website unavailable, failover
+2016-01-10 17:56:39,748-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-10 17:56:40,484-CFupdater-INFO: Found zone rickmur.com
+2016-01-10 17:56:40,780-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-10 17:56:40,780-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-10 17:56:40,781-CFupdater-INFO: All done! Thank you!
+2016-01-10 17:57:01,846-CFupdater-WARNING: Primary IP check website unavailable, failover
+2016-01-10 17:57:03,207-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-10 17:57:04,694-CFupdater-INFO: Found zone rickmur.com
+2016-01-10 17:57:04,985-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-10 17:57:04,985-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-10 17:57:04,985-CFupdater-INFO: All done! Thank you!
+2016-01-10 17:57:14,512-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-10 17:57:15,512-CFupdater-INFO: Found zone rickmur.com
+2016-01-10 17:57:15,991-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-10 17:57:15,991-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-10 17:57:15,991-CFupdater-INFO: All done! Thank you!
+2016-01-10 17:57:23,730-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-10 17:57:23,985-CFupdater-INFO: All done! Thank you!
+2016-01-10 17:57:37,320-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-10 17:57:38,182-CFupdater-ERROR: HTTP error: Bad Request
+2016-01-10 17:57:38,182-CFupdater-ERROR: Unexpected data received, check authentication settings
+2016-01-10 17:58:45,037-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-10 17:58:45,401-CFupdater-ERROR: HTTP error: Bad Request
+2016-01-10 17:58:45,401-CFupdater-ERROR: Unexpected data received, check authentication settings
+2016-01-10 17:58:59,002-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-10 17:58:59,518-CFupdater-INFO: Found zone rickmur.com
+2016-01-10 17:59:00,037-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-10 17:59:00,037-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-10 17:59:00,037-CFupdater-INFO: All done! Thank you!
+2016-01-10 18:01:01,960-CFupdater-INFO: WAN IP: 83.87.76.112
+2016-01-10 18:01:04,820-CFupdater-INFO: Found zone rickmur.com
+2016-01-10 18:01:05,822-CFupdater-INFO: 	No update necessary for home.rickmur.com
+2016-01-10 18:01:05,823-CFupdater-INFO: 	No update necessary for test.rickmur.com
+2016-01-10 18:01:05,823-CFupdater-INFO: All done! Thank you!
