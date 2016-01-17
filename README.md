@@ -28,6 +28,9 @@ The following line should be appended to your crontab file (edited either with `
 - Please be careful with sharing the CloudFlare API key and E-mail, treat it as a username/password.
 - There is **no** limit on the amount of zones and records per zone
 - If you want to update the **root** A-record of your zone (known as **@** in Cloudlare) like `example.com`, use **root** as the record name
+- If you want to enable logging, use the `file` setting to set all logging to output to a file in the same directory.
+- If you want to enable syslog which will output to your system default logfile use the `syslog` setting and set to `true` or `false` to enable or disable
+- When all logging settings are removed, only text output is shown when running the script
 ```YAML
 # List of DNS zones to check
 # Use the keyword 'root' to match the A-record of the domain itself, like 'example.com'
@@ -39,10 +42,15 @@ zones:
     example.com:
         - root
         - home
-        - dynamic
     example2.net:
         - www
         - myhost
+
+# Put a file name with path or without for using CFupdater.py directory
+# Syslog logs to your systems default log file, use True or False to enable/disable
+logging:
+    file: ./CFupdater.log
+    syslog: true
 ```
 
 ##License

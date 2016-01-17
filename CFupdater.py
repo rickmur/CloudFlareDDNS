@@ -9,6 +9,7 @@ import syslog
 import requests
 import os
 from netaddr import IPAddress
+from logging.handlers import RotatingFileHandler
 
 print ("--------------------------------------------")
 print ("Maverick.Solutions - CloudFlare DNS Updater")
@@ -38,7 +39,7 @@ try:
     pass
 
   if (logFile):
-    handler = logging.FileHandler(logFile)
+    handler = RotatingFileHandler(logFile, maxBytes=256000, backupCount=1)
     handler.setLevel(logging.INFO)
     handler.setFormatter(logging.Formatter("%(asctime)s-%(name)s-%(levelname)s: %(message)s"))
     log.addHandler(handler)
