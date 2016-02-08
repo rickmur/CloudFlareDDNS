@@ -13,8 +13,8 @@ zones:
         - myhost
 
 
-# Put a file name with path or without for using CFupdater.py directory
+# Put a file name with full path (or without in case you want to use the CFupdater.py directory)
 # Syslog logs to your systems default log file, use True or False to enable/disable
 logging:
-    file: ./CFupdater.log
+    file: CFupdater.log
     syslog: true

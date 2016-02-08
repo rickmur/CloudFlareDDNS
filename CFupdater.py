@@ -33,7 +33,11 @@ try:
   # Check if logging to file is wanted and setup logging and same for syslog
   logFile = ""
   try:
-    logFile = os.path.realpath(myConfig["logging"]["file"])
+    myFile = myConfig["logging"]["file"]
+    if myFile.startswith("/") or myFile.startswith("./"):
+      logFile = os.path.realpath(myFile)
+    else:
+      logFile = os.path.realpath(os.path.dirname(__file__)) + "/" + myFile
   except:
     pass
 
