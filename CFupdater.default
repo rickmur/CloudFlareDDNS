@@ -18,12 +18,12 @@ zones:
 # Other entries are the host-part of the IPv6 address and the script will gather the ISP prefix
 # The ISP prefix length should be left at /64 if you don't use subnetting
 zones_v6:
-    isp_prefixlength: /64,
+    isp_prefixlength: /64
     example.com:
-        www: dynamic,
+        www: dynamic
         test: ::1
     sample.cloud:
-        root: :BAD::1,
+        root: :BAD::1
         myrecord: :BAD::10
 
 # Put a file name with full path (or without in case you want to use the CFupdater.py directory)
