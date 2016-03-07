@@ -19,12 +19,12 @@ zones:
 # The ISP prefix length should be left at /64 if you don't use subnetting
 zones_v6:
     isp_prefixlength: /64,
-    rickmur.com:
-        home: dynamic,
+    example.com:
+        www: dynamic,
         test: ::1
-    maverick.solutions:
+    sample.cloud:
         root: :BAD::1,
-        home: :BAD::10
+        myrecord: :BAD::10
 
 # Put a file name with full path (or without in case you want to use the CFupdater.py directory)
 # Syslog logs to your systems default log file, use True or False to enable/disable
