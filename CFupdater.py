@@ -197,8 +197,7 @@ try:
       getIPv6.raise_for_status()
 
     # Format received IP in IPAddress type to verify contents
-    #myIPv6 = IPNetwork(getIPv6.text + prefixlength)
-    myIPv6 = IPNetwork("2001:1c02:b01:8700::100" + prefixlength)
+    myIPv6 = IPNetwork(getIPv6.text + prefixlength)
 
     # Check if getIP is really IPv6
     if (not myIPv6.version == 6):
