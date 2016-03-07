@@ -196,15 +196,16 @@ try:
         syslog.syslog(syslog.LOG_ERR, msg)
       getIPv6.raise_for_status()
 
-    # Format received IP in IPAddress type to verify contents
-    myIPv6 = IPNetwork(getIPv6.text + prefixlength)
-
-    # Check if getIP is really IPv6
-    if (not myIPv6.version == 6):
-      msg = "No IPv6 address was found, check IPv6 Internet connection"
-      raise Exception (msg)
-    else:
-      log.info ("WAN IPv6: " + str(myIPv6))
+    # Format received IP in IPAddress type to verify contents and check if valid
+    try:
+      myIPv6 = IPNetwork(getIPv6.text + prefixlength)
+      if (not myIPv6.version == 6):
+        msg = "No IPv6 address was found, check IPv6 Internet connection"
+        raise Exception (msg)
+      else:
+        log.info ("WAN IPv6: " + str(myIPv6))
+    except:
+      raise Exception ("No IPv6 address was found, check IPv6 Internet connection")
 
   # Build headers for REST call and get zone list
   CFheaders = {

@@ -5,7 +5,7 @@ This is a simple script to update a CloudFlare DNS record with your WAN IP. Clou
 
 This has been an exercise to get familier with Python, so any comments and improvements regarding my code are welcome!
 
-In version 2 the support for IPv6 is added!
+**In version 2 the support for IPv6 is added!**
 
 If you encounter a problem, please file a Github issue.
 
@@ -76,4 +76,4 @@ This software is licensed under the Apache License, Version 2.0 (the "License");
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-Copyright (c) 2016 - Maverick.Solutions - Rick Mur
+**Copyright (c) 2016 - Maverick.Solutions - Rick Mur**
