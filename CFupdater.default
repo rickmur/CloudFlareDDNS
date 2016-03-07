@@ -4,6 +4,7 @@
 cloudflareEmail: yourEmailToLogin
 cloudflareAuthKey: yourAPIkey
 
+# Define A-records (IPv4) that need to be updated
 zones:
     example.com:
         - root
@@ -12,6 +13,18 @@ zones:
         - www
         - myhost
 
+# Define AAAA-records (IPv6) that need to be updated
+# "Dynamic" entries will use the exact IPv6 address gathered during the run of the script
+# Other entries are the host-part of the IPv6 address and the script will gather the ISP prefix
+# The ISP prefix length should be left at /64 if you don't use subnetting
+zones_v6:
+    isp_prefixlength: /64,
+    rickmur.com:
+        home: dynamic,
+        test: ::1
+    maverick.solutions:
+        root: :BAD::1,
+        home: :BAD::10
 
 # Put a file name with full path (or without in case you want to use the CFupdater.py directory)
 # Syslog logs to your systems default log file, use True or False to enable/disable
