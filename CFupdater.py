@@ -198,14 +198,14 @@ try:
 
     # Format received IP in IPAddress type to verify contents and check if valid
     try:
+      msg = "No IPv6 address found, but IPv6 zones are configured, check IPv6 Internet connection"
       myIPv6 = IPNetwork(getIPv6.text + prefixlength)
       if (not myIPv6.version == 6):
-        msg = "No IPv6 address was found, check IPv6 Internet connection"
         raise Exception (msg)
       else:
         log.info ("WAN IPv6: " + str(myIPv6))
     except:
-      raise Exception ("No IPv6 address was found, check IPv6 Internet connection")
+      raise Exception (msg)
 
   # Build headers for REST call and get zone list
   CFheaders = {
