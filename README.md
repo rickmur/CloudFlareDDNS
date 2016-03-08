@@ -14,6 +14,7 @@ If you encounter a problem, please file a Github issue.
 2. Install required libraries with `pip install -r requirements.txt`. If your Synology doesn't have pip installed yet, follow the steps in the next section
 3. Copy `CFupdater.default` to `CFupdater.conf` with `cp CFupdater.default CPupdater.conf`
 4. Edit `CFupdater.conf` to include your CloudFlare username (e-mail), API key (found in Settings panel) and your domainnames (zones) and records as per the example below
+5. **Make sure to use spaces instead of tabs in the configuration file**, YAML prohibits the use of tabs
 5. Run `crontab -e` or on Synology platforms `vi /etc/crontab` and append a line to enable recurring updates as per the example below
 
 #####Install PIP on Synology
