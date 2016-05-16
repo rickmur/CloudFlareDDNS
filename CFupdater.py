@@ -1,7 +1,4 @@
 # Rick Mur - Maverick.Solutions - (c) 2016
-__author__ = "Rick Mur"
-__version__ = "2.0"
-
 import yaml
 import json
 import logging
@@ -15,31 +12,33 @@ print ("--------------------------------------------")
 print ("Maverick.Solutions - CloudFlare DNS Updater")
 print ("--------------------------------------------")
 
+__author__ = "Rick Mur"
+__version__ = "2.0"
 syslogYes = False
 IPv4 = False
 IPv6 = False
 
 
-def updateRecords(dnsRecord, recordsConfig, theIP, zoneID, zoneName):
+def update_records(dns_record, records_config, the_ip, zone_id, zone_name):
     # Get Records list to verify if records exist that want an update
-    myRecordsGet = requests.get(
-        "https://api.cloudflare.com/client/v4/zones/" + zoneID + "/dns_records?type=" + dnsRecord, headers=CFheaders)
+    my_records_get = requests.get(
+        "https://api.cloudflare.com/client/v4/zones/" + zone_id + "/dns_records?type=" + dns_record, headers=CFheaders)
 
     # Check if HTTP status is OK and response is received
-    if (not myRecordsGet.ok):
-        msg = "HTTP error: " + myRecordsGet.reason
+    if not my_records_get.ok:
+        msg = "HTTP error: " + my_records_get.reason
         log.error(msg)
-        if (syslogYes):
+        if syslogYes:
             syslog.syslog(syslog.LOG_ERR, msg)
-        myRecordsGet.raise_for_status()
+        my_records_get.raise_for_status()
 
     # Lookup records in zone list and match against config
-    myCFrecords = myRecordsGet.json()
+    my_cf_records = my_records_get.json()
 
     # Go through records found under zone
-    for CFrecord in myCFrecords["result"]:
-        record = str(CFrecord["name"])
-        if record == zoneName:
+    for cfrecord in my_cf_records["result"]:
+        record = str(cfrecord["name"])
+        if record == zone_name:
             # If domain name is DNS entry, then use it as root in config
             record = "root"
         else:
@@ -47,57 +46,57 @@ def updateRecords(dnsRecord, recordsConfig, theIP, zoneID, zoneName):
             record = record.split(".")[0]
 
         # Update all records that are
-        if (record in recordsConfig):
+        if record in records_config:
             # When IPv6 is used, the IP may need to be changed
-            if (dnsRecord == "AAAA"):
+            if dns_record == "AAAA":
                 # If dynamic entry is used, use the IPv6 address of the current system
-                if (recordsConfig[record].lower() == "dynamic"):
-                    setIP = str(theIP.ip)
+                if records_config[record].lower() == "dynamic":
+                    setip = str(the_ip.ip)
                 else:
                     # Otherwise use the ISP prefix and the address as requested
-                    setIP = str(theIP.network)[:-2] + recordsConfig[record]
+                    setip = str(the_ip.network)[:-2] + records_config[record]
 
                     # Make sure the entry is an actual IPv6 address
                     try:
-                        testIP = IPAddress(setIP)
+                        testip = IPAddress(setip)
                     except:
-                        raise Exception("IPv6 address: " + recordsConfig[
-                            record] + " at " + record + "." + zoneName + " is invalid!")
+                        raise Exception("IPv6 address: " + records_config[
+                            record] + " at " + record + "." + zone_name + " is invalid!")
             else:
-                setIP = str(theIP)
+                setip = str(the_ip)
 
-            if (CFrecord["content"].lower() == setIP.lower()):
+            if cfrecord["content"].lower() == setip.lower():
                 # IP is still the same so no update
-                log.info("\tNo update necessary for " + CFrecord["name"])
+                log.info("\tNo update necessary for " + cfrecord["name"])
             else:
                 # Update record with new IP
-                CFrecord["content"] = setIP
+                cfrecord["content"] = setip
 
                 # Send updated record back to CloudFlare, don't forget to format the dictionary as JSON
-                updateRecord = requests.put(
-                    "https://api.cloudflare.com/client/v4/zones/" + zoneID + "/dns_records/" + CFrecord["id"],
-                    data=json.dumps(CFrecord), headers=CFheaders)
+                update_record = requests.put(
+                    "https://api.cloudflare.com/client/v4/zones/" + zone_id + "/dns_records/" + cfrecord["id"],
+                    data=json.dumps(cfrecord), headers=CFheaders)
 
                 # Check if HTTP status is OK and response is received
-                if (not myRecordsGet.ok):
-                    msg = "HTTP error: " + myRecordsGet.reason
+                if not my_records_get.ok:
+                    msg = "HTTP error: " + my_records_get.reason
                     log.error(msg)
-                    if (syslogYes):
+                    if syslogYes:
                         syslog.syslog(syslog.LOG_ERR, msg)
-                    updateRecord.raise_for_status()
+                    update_record.raise_for_status()
 
                 # Check if CloudFlare response is Success or not
-                updateRecordJson = updateRecord.json()
-                if (bool(updateRecordJson["success"])):
-                    log.info("\tUpdating " + CFrecord["name"] + " completed successfully")
+                update_records_json = update_record.json()
+                if bool(update_records_json["success"]):
+                    log.info("\tUpdating " + cfrecord["name"] + " completed successfully")
                 else:
-                    msg = "\t Updating " + CFrecord["name"] + " failed!"
+                    msg = "\t Updating " + cfrecord["name"] + " failed!"
                     log.error(msg)
-                    if (syslogYes):
+                    if syslogYes:
                         syslog.syslog(syslog.LOG_ERR, msg)
-                    msg = "\tCloudFlare ERROR: " + str(updateRecordJson["errors"][0]["message"])
+                    msg = "\tCloudFlare ERROR: " + str(update_records_json["errors"][0]["message"])
                     log.error(msg)
-                    if (syslogYes):
+                    if syslogYes:
                         syslog.syslog(syslog.LOG_ERR, msg)
 
 
@@ -110,7 +109,7 @@ try:
     # Load settings files and verify if YAML contents are found
     configFile = os.path.realpath(os.path.dirname(__file__)) + "/CFupdater.conf"
     myConfig = yaml.load(open(configFile).read())
-    if (not myConfig):
+    if not myConfig:
         raise Exception
 
     # Check if logging to file is wanted and setup logging and same for syslog
@@ -129,7 +128,7 @@ try:
     except:
         pass
 
-    if (logFile):
+    if logFile:
         handler = RotatingFileHandler(logFile, maxBytes=256000, backupCount=1)
         handler.setLevel(logging.INFO)
         handler.setFormatter(logging.Formatter("%(asctime)s-%(name)s-%(levelname)s: %(message)s"))
@@ -137,47 +136,47 @@ try:
 
     # Check if IPv4 is required to be updated in settings
     try:
-        if (myConfig["zones"]):
+        if myConfig["zones"]:
             IPv4 = True
     except:
         IPv4 = False
 
     # Check if IPv6 is required to be updated in settings
     try:
-        if (myConfig["zones_v6"]):
+        if myConfig["zones_v6"]:
             IPv6 = True
     except:
         IPv6 = False
 
-    if (IPv4 == True):
-        # Get WAN (External) IP address from 2 sources, if first fails, failover
+    if IPv4:
+        # Get WAN (External) IP address from 2 sources, if first fails, fail-over
         try:
             getIP = requests.get("http://myip.dnsomatic.com")
         except requests.ConnectionError:
             msg = "Primary IP check website unavailable, failover"
             log.warning(msg)
-            if (syslogYes):
+            if syslogYes:
                 syslog.syslog(syslog.LOG_WARNING, msg)
             getIP = requests.get("http://curlmyip.com")
 
         # Check if HTTP status is OK and response is received
-        if (not getIP.ok):
+        if not getIP.ok:
             msg = "HTTP error: " + getIP.reason
             log.error(msg)
-            if (syslogYes):
+            if syslogYes:
                 syslog.syslog(syslog.LOG_ERR, msg)
             getIP.raise_for_status()
 
         # Format received IP in IPAddress type to verify contents
         myIP = IPAddress(getIP.text)
         # Check if getIP is really IPv4
-        if (not myIP.version == 4):
+        if not myIP.version == 4:
             msg = "This IP is not IPv4 which was expected, using IPv6 only?"
             raise Exception(msg)
         else:
             log.info("WAN IPv4: " + str(myIP))
 
-    if (IPv6 == True):
+    if IPv6:
         # Try to get prefixlength from config file, if not existent assume /64
         try:
             prefixlength = str(myConfig["zones_v6"]["isp_prefixlength"])
@@ -190,15 +189,15 @@ try:
         except requests.ConnectionError:
             msg = "Primary IPv6 check website unavailable, failover"
             log.warning(msg)
-            if (syslogYes):
+            if syslogYes:
                 syslog.syslog(syslog.LOG_WARNING, msg)
             getIPv6 = requests.get("http://v6.ident.me/")
 
         # Check if HTTP status is OK and response is received
-        if (not getIPv6.ok):
+        if not getIPv6.ok:
             msg = "HTTP error: " + getIPv6.reason
             log.error(msg)
-            if (syslogYes):
+            if syslogYes:
                 syslog.syslog(syslog.LOG_ERR, msg)
             getIPv6.raise_for_status()
 
@@ -206,7 +205,7 @@ try:
         try:
             msg = "No IPv6 address found, but IPv6 zones are configured, check IPv6 Internet connection"
             myIPv6 = IPNetwork(getIPv6.text + prefixlength)
-            if (not myIPv6.version == 6):
+            if not myIPv6.version == 6:
                 raise Exception(msg)
             else:
                 log.info("WAN IPv6: " + str(myIPv6))
@@ -222,10 +221,10 @@ try:
     myZonesGet = requests.get("https://api.cloudflare.com/client/v4/zones?status=active", headers=CFheaders)
 
     # Check if HTTP status is OK and response is received
-    if (not myZonesGet.ok):
+    if not myZonesGet.ok:
         msg = "HTTP error: " + myZonesGet.reason
         log.error(msg)
-        if (syslogYes):
+        if syslogYes:
             syslog.syslog(syslog.LOG_ERR, msg)
         myZonesGet.raise_for_status()
 
@@ -235,35 +234,35 @@ try:
         zoneName = CFzone["name"]
         zoneID = CFzone["id"]
 
-        if IPv4 == True:
+        if IPv4:
             if CFzone["name"] in myConfig["zones"].keys():
                 recordsConfig = myConfig["zones"][zoneName]
                 log.info("IPv4: Found zone " + zoneName)
 
                 # Call UpdateRecords function to update A records
-                updateRecords("A", recordsConfig, myIP, zoneID, zoneName)
+                update_records("A", recordsConfig, myIP, zoneID, zoneName)
 
-        if IPv6 == True:
+        if IPv6:
             if CFzone["name"] in myConfig["zones_v6"].keys():
                 recordsConfig = myConfig["zones_v6"][zoneName]
                 log.info("IPv6: Found zone " + zoneName)
 
                 # Call UpdateRecords function to update AAAA records
-                updateRecords("AAAA", recordsConfig, myIPv6, zoneID, zoneName)
+                update_records("AAAA", recordsConfig, myIPv6, zoneID, zoneName)
 
     log.info("All done! Thank you!")
 except requests.ConnectionError:
     msg = "Connection failed, please check Internet connection"
     log.error(msg)
-    if (syslogYes):
+    if syslogYes:
         syslog.syslog(syslog.LOG_ERR, msg)
 except requests.HTTPError:
     msg = "Unexpected data received, check authentication settings"
     log.error(msg)
-    if (syslogYes):
+    if syslogYes:
         syslog.syslog(syslog.LOG_ERR, msg)
 except Exception as e:
     msg = "Something went wrong: " + str(e.message)
     log.error(msg)
-    if (syslogYes):
+    if syslogYes:
         syslog.syslog(syslog.LOG_ERR, msg)
