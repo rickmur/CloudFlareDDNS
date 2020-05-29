@@ -151,14 +151,14 @@ try:
     if IPv4:
         # Get WAN (External) IP address from 2 sources, if first fails, fail-over
         try:
-            getIP = requests.get("http://myip.dnsomatic.com")
-        except requests.ConnectionError:
+            getIP = requests.get("http://whatismyip.akamai.com/")
+        except:
             msg = "Primary IP check website unavailable, failover"
             log.warning(msg)
             if syslogYes:
                 syslog.syslog(syslog.LOG_WARNING, msg)
-            getIP = requests.get("http://curlmyip.com")
-
+            getIP = requests.get("http://myip.dnsomatic.com")
+        
         # Check if HTTP status is OK and response is received
         if not getIP.ok:
             msg = "HTTP error: " + getIP.reason
